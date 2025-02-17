@@ -1,17 +1,18 @@
 # Base image
 FROM node:20-alpine AS base
+RUN corepack enable && corepack prepare pnpm@latest --activate
 WORKDIR /app
 
 # Dependencies
 FROM base AS deps
-COPY package.json package-lock.json ./
-RUN npm ci
+COPY pnpm-lock.yaml package.json ./
+RUN pnpm install --frozen-lockfile
 
 # Builder
 FROM base AS builder
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-RUN npm run build
+RUN pnpm build
 
 # Runner
 FROM base AS runner
