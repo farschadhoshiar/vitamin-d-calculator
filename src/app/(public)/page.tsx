@@ -1,7 +1,5 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { VitaminDCalculator } from "@/components/VitaminDCalculator"
-import { ReferenceTable } from "@/components/ReferenceTable"
-import { FloatingThemeSwitch } from "@/components/floating-theme-switch"
 import { Header } from "@/components/Header"
 
 export default function HomePage() {
