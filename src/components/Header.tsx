@@ -14,7 +14,37 @@ import {
 import { cn } from "@/lib/utils"
 import { AnimatedSunLogo } from "@/components/AnimatedSunLogo"
 import { MobileNav } from "@/components/MobileNav"
-import { navigationConfig } from "./navigation-config"
+
+const resources = [
+  {
+    title: "Vitamin D Toxizität",
+    href: "/blog/vitamin-d-toxicity",
+    description: "Welche Vitamin D Dosen sind sicher? Eine evidenzbasierte Analyse.",
+  },
+  {
+    title: "Vitamin D und COVID-19",
+    href: "https://pubmed.ncbi.nlm.nih.gov/32679784/",
+    description: "Studie über die Rolle von Vitamin D bei COVID-19",
+  },
+  {
+    title: "Vitamin D und Darmkrebs",
+    href: "https://sonnenallianz.spitzen-praevention.com/2025/02/06/studien-zeigen-vitamin-d-beugt-darmkrebs-vor-und-erhoeht-die-ueberlebensrate-von-darmkrebserkrankten/",
+    description: "Vitamin D beugt Darmkrebs vor und erhöht die Überlebensrate von Darmkrebserkrankten.",
+  },
+]
+
+const legal = [
+  {
+    title: "Disclaimer",
+    href: "/disclaimer",
+    description: "Medizinischer und rechtlicher Haftungsausschluss",
+  },
+  {
+    title: "Impressum",
+    href: "/imprint",
+    description: "Gesetzlich vorgeschriebene Anbieterkennzeichnung",
+  },
+]
 
 const ListItem = React.forwardRef<
   React.ElementRef<"a">,
@@ -54,11 +84,9 @@ export function Header() {
         <div className="flex items-center">
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-4 sm:space-x-6">
-            {navigationConfig.mainNav.map((item) => (
-              <Link key={item.href} href={item.href}>
-                <Button variant="ghost">{item.title}</Button>
-              </Link>
-            ))}
+            <Link href="/faq">
+              <Button variant="ghost">FAQ</Button>
+            </Link>
             
             <NavigationMenu>
               <NavigationMenuList>
@@ -66,13 +94,13 @@ export function Header() {
                   <NavigationMenuTrigger>Ressourcen</NavigationMenuTrigger>
                   <NavigationMenuContent>
                     <ul className="grid w-[400px] gap-3 p-4">
-                      {navigationConfig.resources.map((resource) => (
+                      {resources.map((resource) => (
                         <ListItem
                           key={resource.title}
                           title={resource.title}
                           href={resource.href}
-                          target={!resource.internal ? "_blank" : undefined}
-                          rel={!resource.internal ? "noopener noreferrer" : undefined}
+                          target={resource.href.startsWith('http') ? "_blank" : undefined}
+                          rel={resource.href.startsWith('http') ? "noopener noreferrer" : undefined}
                         >
                           {resource.description}
                         </ListItem>
@@ -85,7 +113,7 @@ export function Header() {
                   <NavigationMenuTrigger>Rechtliches</NavigationMenuTrigger>
                   <NavigationMenuContent>
                     <ul className="grid w-[400px] gap-3 p-4">
-                      {navigationConfig.legal.map((item) => (
+                      {legal.map((item) => (
                         <ListItem
                           key={item.title}
                           title={item.title}

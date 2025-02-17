@@ -109,7 +109,7 @@ export function CalculationExplanation({
                         </p>
                         <div className="bg-muted/50 p-3 rounded-md space-y-2">
                           <p className="text-sm">
-                            1. Formel: Gewicht × 94,08 IU
+                            1. Formel: Gewicht × 57,14 IU
                           </p>
                           <p className="text-sm">
                             2. {weight} kg × 94,08 = {maintenance.toLocaleString()} IU/Tag

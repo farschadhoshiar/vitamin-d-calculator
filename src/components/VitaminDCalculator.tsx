@@ -68,7 +68,7 @@ export function VitaminDCalculator() {
     const levelDifference = targetLevel - currentLevel
     const dailyDose = Math.max(1000, Math.round((values.weight * 140 * levelDifference) / 90))
     // Neue Berechnung für Erhaltungsdosis: 94.08 IU pro kg Körpergewicht
-    const maintenanceDose = Math.max(800, Math.round(values.weight * 94.08))
+    const maintenanceDose = Math.max(800, Math.round(values.weight * 57,14))
 
     const dailySupplements = calculateSupplements(dailyDose)
     const maintenanceSupplements = calculateSupplements(maintenanceDose)

@@ -1,54 +1,54 @@
 "use client"
 
 import { Card } from "@/components/ui/card"
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible"
 import { ChevronDown } from "lucide-react"
-import { Button } from "@/components/ui/button"
 import { motion, AnimatePresence } from "framer-motion"
 import { useState } from "react"
 
 interface FAQItemProps {
   question: string
   children: React.ReactNode
+  icon?: React.ReactNode
 }
 
-export function FAQItem({ question, children }: FAQItemProps) {
+export function FAQItem({ question, children, icon }: FAQItemProps) {
   const [isOpen, setIsOpen] = useState(false)
 
   return (
-    <Card>
-      <Collapsible open={isOpen} onOpenChange={setIsOpen}>
-        <CollapsibleTrigger asChild>
-          <Button variant="ghost" className="flex w-full justify-between p-6">
-            <span className="text-lg font-semibold text-left">{question}</span>
-            <motion.div
-              animate={{ rotate: isOpen ? 180 : 0 }}
-              transition={{ duration: 0.2 }}
-            >
-              <ChevronDown className="h-5 w-5" />
-            </motion.div>
-          </Button>
-        </CollapsibleTrigger>
-        <AnimatePresence>
-          {isOpen && (
-            <CollapsibleContent forceMount>
-              <motion.div
-                initial={{ height: 0, opacity: 0 }}
-                animate={{ height: "auto", opacity: 1 }}
-                exit={{ height: 0, opacity: 0 }}
-                transition={{ duration: 0.2 }}
-                className="prose dark:prose-invert px-6 pb-6"
-              >
+    <Card className="overflow-hidden">
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="w-full px-4 py-4 flex items-start justify-between gap-3 hover:bg-muted/50 transition-colors"
+      >
+        <div className="flex gap-3 text-left">
+          <div className="flex-shrink-0 mt-1">
+            {icon}
+          </div>
+          <span className="text-base font-medium">{question}</span>
+        </div>
+        <ChevronDown 
+          className="h-5 w-5 flex-shrink-0 mt-1 transition-transform duration-200" 
+          style={{ transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)' }}
+        />
+      </button>
+      
+      <AnimatePresence initial={false}>
+        {isOpen && (
+          <motion.div
+            initial={{ height: 0 }}
+            animate={{ height: "auto" }}
+            exit={{ height: 0 }}
+            transition={{ duration: 0.2 }}
+            className="overflow-hidden"
+          >
+            <div className="px-4 pb-4 pt-2">
+              <div className="pl-8">
                 {children}
-              </motion.div>
-            </CollapsibleContent>
-          )}
-        </AnimatePresence>
-      </Collapsible>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </Card>
   )
 } 

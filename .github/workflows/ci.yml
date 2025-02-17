@@ -2,7 +2,7 @@ name: CI/CD Pipeline
 
 on:
   push:
-    branches: [ dev ]
+    branches: [ dev, main ]
   pull_request:
     branches: [ main ]
 
@@ -57,9 +57,9 @@ jobs:
       with:
         images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
         tags: |
-          type=ref,event=branch
+          type=raw,value=latest,enable=${{ github.ref == 'refs/heads/main' }}
+          type=raw,value=dev-latest,enable=${{ github.ref == 'refs/heads/dev' }}
           type=sha,format=long
-          type=raw,value=latest,enable={{is_default_branch}}
     
     - name: Build and push Docker image
       uses: docker/build-push-action@v5
