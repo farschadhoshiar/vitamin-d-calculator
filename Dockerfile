@@ -1,11 +1,11 @@
 # Base image
 FROM node:20-slim AS base
-RUN corepack enable && corepack prepare pnpm@latest --activate
+RUN npm install -g pnpm
 WORKDIR /app
 
 # Dependencies
 FROM base AS deps
-COPY pnpm-lock.yaml package.json ./
+COPY package.json pnpm-lock.yaml ./
 RUN pnpm install --frozen-lockfile
 
 # Builder
@@ -15,12 +15,13 @@ COPY . .
 RUN pnpm build
 
 # Runner
-FROM base AS runner
+FROM node:20-slim AS runner
+WORKDIR /app
 ENV NODE_ENV production
 ENV NEXT_TELEMETRY_DISABLED 1
 
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nextjs
+RUN addgroup --system --gid 1001 nodejs && \
+    adduser --system --uid 1001 nextjs
 
 COPY --from=builder /app/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
