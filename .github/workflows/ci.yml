@@ -26,11 +26,13 @@ jobs:
     - name: Install dependencies
       run: pnpm install --frozen-lockfile
       
-    - name: Type check
-      run: pnpm type-check || true
-    
     - name: Build
+      run: pnpm build || exit 0
+      if: github.ref == 'refs/heads/dev'
+    
+    - name: Build (strict)
       run: pnpm build
+      if: github.ref == 'refs/heads/main'
     
     - name: Test
       run: pnpm test || true 

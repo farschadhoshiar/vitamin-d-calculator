@@ -1,10 +1,6 @@
 "use client"
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { motion } from "framer-motion"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Badge } from "@/components/ui/badge"
-import { Pill, Timer, Droplets } from "lucide-react"
 import { WeeklyPillOrganizer } from "@/components/WeeklyPillOrganizer"
 
 interface DosageProps {

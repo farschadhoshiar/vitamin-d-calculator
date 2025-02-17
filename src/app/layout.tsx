@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
+import { FloatingThemeSwitch } from "@/components/floating-theme-switch";
 import { cn } from "@/lib/utils";
 
 const inter = Inter({
@@ -32,6 +33,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           {children}
+          <FloatingThemeSwitch />
         </ThemeProvider>
       </body>
     </html>
