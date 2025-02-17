@@ -4,39 +4,44 @@ import * as React from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import {
-  Drawer,
-  DrawerContent,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerTrigger,
-} from "@/components/ui/drawer"
-import {
   NavigationMenu,
   NavigationMenuContent,
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger,
-  navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu"
 import { cn } from "@/lib/utils"
 import { AnimatedSunLogo } from "@/components/AnimatedSunLogo"
 
-const components: { title: string; href: string; description: string }[] = [
+const resources = [
   {
-    title: "Vitamin D Guide",
-    href: "/guide",
-    description: "Umfassender Leitfaden zur Vitamin D Supplementierung.",
+    title: "Vitamin D Toxizität",
+    href: "/blog/vitamin-d-toxicity",
+    description: "Welche Vitamin D Dosen sind sicher? Eine evidenzbasierte Analyse.",
   },
   {
-    title: "Blog",
-    href: "/blog",
-    description: "Aktuelle Erkenntnisse und Studien zu Vitamin D.",
+    title: "Vitamin D und COVID-19",
+    href: "https://pubmed.ncbi.nlm.nih.gov/32679784/",
+    description: "Studie über die Rolle von Vitamin D bei COVID-19",
   },
   {
-    title: "FAQ",
-    href: "/faq",
-    description: "Häufig gestellte Fragen zur Vitamin D Supplementierung.",
+    title: "Vitamin D und Darmkrebs",
+    href: "https://sonnenallianz.spitzen-praevention.com/2025/02/06/studien-zeigen-vitamin-d-beugt-darmkrebs-vor-und-erhoeht-die-ueberlebensrate-von-darmkrebserkrankten/",
+    description: "Vitamin D beugt Darmkrebs vor und erhöht die Überlebensrate von Darmkrebserkrankten.",
+  },
+]
+
+const legal = [
+  {
+    title: "Disclaimer",
+    href: "/disclaimer",
+    description: "Medizinischer und rechtlicher Haftungsausschluss",
+  },
+  {
+    title: "Impressum",
+    href: "/imprint",
+    description: "Gesetzlich vorgeschriebene Anbieterkennzeichnung",
   },
 ]
 
@@ -66,68 +71,35 @@ const ListItem = React.forwardRef<
 })
 ListItem.displayName = "ListItem"
 
-const navigationItems = [
-  {
-    title: "Ressourcen",
-    items: [
-      {
-        title: "Vitamin D Guide",
-        href: "/guide",
-        description: "Umfassender Leitfaden zur Vitamin D Supplementierung.",
-      },
-      {
-        title: "Blog",
-        href: "/blog",
-        description: "Aktuelle Erkenntnisse und Studien zu Vitamin D.",
-      },
-      {
-        title: "FAQ",
-        href: "/faq",
-        description: "Häufig gestellte Fragen zur Vitamin D Supplementierung.",
-      },
-    ],
-  },
-  {
-    title: "Rechtliches",
-    items: [
-      {
-        title: "Datenschutz",
-        href: "/datenschutz",
-      },
-      {
-        title: "Impressum",
-        href: "/impressum",
-      },
-    ],
-  },
-]
-
 export function Header() {
-  const [open, setOpen] = React.useState(false)
-
   return (
-    <div className="border-b">
-      <div className="container mx-auto flex h-16 items-center px-4 justify-between">
-        <Link href="/" className="flex items-center space-x-2">
-          <AnimatedSunLogo />
-          <span className="font-bold text-primary">VITAMIN-D Rechner</span>
+    <header className="border-b">
+      <div className="container mx-auto flex h-16 items-center justify-between px-4 sm:px-8">
+        <Link href="/" className="flex items-center gap-2 text-lg font-semibold">
+          <AnimatedSunLogo className="h-8 w-8" />
+          <span>Vitamin D Rechner</span>
         </Link>
-
-        {/* Desktop Navigation */}
-        <div className="hidden md:block">
+        
+        <nav className="flex items-center space-x-4 sm:space-x-6">
+          <Link href="/faq">
+            <Button variant="ghost">FAQ</Button>
+          </Link>
+          
           <NavigationMenu>
             <NavigationMenuList>
               <NavigationMenuItem>
                 <NavigationMenuTrigger>Ressourcen</NavigationMenuTrigger>
                 <NavigationMenuContent>
-                  <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
-                    {components.map((component) => (
+                  <ul className="grid w-[400px] gap-3 p-4">
+                    {resources.map((resource) => (
                       <ListItem
-                        key={component.title}
-                        title={component.title}
-                        href={component.href}
+                        key={resource.title}
+                        title={resource.title}
+                        href={resource.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
                       >
-                        {component.description}
+                        {resource.description}
                       </ListItem>
                     ))}
                   </ul>
@@ -135,76 +107,25 @@ export function Header() {
               </NavigationMenuItem>
 
               <NavigationMenuItem>
-                <Link href="/datenschutz" legacyBehavior passHref>
-                  <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                    Datenschutz
-                  </NavigationMenuLink>
-                </Link>
-              </NavigationMenuItem>
-
-              <NavigationMenuItem>
-                <Link href="/impressum" legacyBehavior passHref>
-                  <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                    Impressum
-                  </NavigationMenuLink>
-                </Link>
+                <NavigationMenuTrigger>Rechtliches</NavigationMenuTrigger>
+                <NavigationMenuContent>
+                  <ul className="grid w-[400px] gap-3 p-4">
+                    {legal.map((item) => (
+                      <ListItem
+                        key={item.title}
+                        title={item.title}
+                        href={item.href}
+                      >
+                        {item.description}
+                      </ListItem>
+                    ))}
+                  </ul>
+                </NavigationMenuContent>
               </NavigationMenuItem>
             </NavigationMenuList>
           </NavigationMenu>
-        </div>
-
-        {/* Mobile Navigation */}
-        <div className="md:hidden">
-          <Drawer open={open} onOpenChange={setOpen}>
-            <DrawerTrigger asChild>
-              <Button
-                variant="ghost"
-                className="h-8 w-8 px-0"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth="1.5"
-                  stroke="currentColor"
-                  className="w-6 h-6"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M3.75 9h16.5m-16.5 6.75h16.5"
-                  />
-                </svg>
-                <span className="sr-only">Menü öffnen</span>
-              </Button>
-            </DrawerTrigger>
-            <DrawerContent className="max-h-[80vh]">
-              <DrawerHeader>
-                <DrawerTitle>Menü</DrawerTitle>
-              </DrawerHeader>
-              <div className="px-4 pb-4">
-                {navigationItems.map((section, index) => (
-                  <div key={index} className="py-4">
-                    <h4 className="font-medium mb-2">{section.title}</h4>
-                    <div className="space-y-2">
-                      {section.items.map((item) => (
-                        <Link
-                          key={item.href}
-                          href={item.href}
-                          onClick={() => setOpen(false)}
-                          className="block py-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
-                        >
-                          {item.title}
-                        </Link>
-                      ))}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </DrawerContent>
-          </Drawer>
-        </div>
+        </nav>
       </div>
-    </div>
+    </header>
   )
 } 
